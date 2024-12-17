@@ -1,0 +1,85 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-12-17 16:16+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+#: .\phonebook\models.py:11
+msgid "Организация"
+msgstr "Ұйымдастыру"
+
+#: .\phonebook\models.py:12
+msgid "Департамент"
+msgstr "Департаменты"
+
+#: .\phonebook\models.py:13
+msgid "Отдел"
+msgstr "Бөлім"
+
+#: .\phonebook\models.py:16 .\phonebook\models.py:40 .\phonebook\models.py:63
+msgid "Подразделение"
+msgstr "Бөлімше"
+
+#: .\phonebook\models.py:20 .\phonebook\models.py:21
+msgid "Тип подразделения"
+msgstr "Бірлік түрі"
+
+#: .\phonebook\models.py:24
+msgid "Порядковый номер для вывода на сайт"
+msgstr "Сайтта көрсету үшін сериялық нөмір"
+
+#: .\phonebook\models.py:32 .\phonebook\models.py:33
+msgid "Родительское подразделение"
+msgstr "Ата-аналар бөлігі"
+
+#: .\phonebook\models.py:41
+msgid "Подразделения"
+msgstr "Бөлімшелер"
+
+#: .\phonebook\models.py:47 .\phonebook\models.py:50 .\phonebook\models.py:74
+msgid "Городской номер телефона"
+msgstr "Қалалық телефон нөмірі"
+
+#: .\phonebook\models.py:51
+msgid "Городские номера телефонов"
+msgstr "Қала телефондары"
+
+#: .\phonebook\models.py:57
+msgid "ФИО"
+msgstr "Толық аты-жөні"
+
+#: .\phonebook\models.py:58
+msgid "Должность"
+msgstr "Қызмет атауы"
+
+#: .\phonebook\models.py:66
+msgid "Адрес электронной почты"
+msgstr "Электрондық поштаның адресі"
+
+#: .\phonebook\models.py:76
+msgid "Сотовый номер"
+msgstr "Ұяшық нөмірі"
+
+#: .\phonebook\models.py:79
+msgid "Фото"
+msgstr "Фото"
+
+#: .\phonebook\models.py:83
+msgid "Сотрудник"
+msgstr "Қызметкер"
+
+#: .\phonebook\models.py:84
+msgid "Сотрудники"
+msgstr "Қызметкерлер"
