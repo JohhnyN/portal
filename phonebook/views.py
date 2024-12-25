@@ -16,6 +16,7 @@ from django.views.generic import (
 from django.contrib import messages
 from django.db.models import ProtectedError
 from django import forms
+from django.utils import timezone
 from .models import Department, Employee
 
 
@@ -30,11 +31,17 @@ class DepartmentListView(ListView):
     template_name = "phonebook/department_list.html"
     context_object_name = "departments"
 
+    def get_queryset(self):
+        return Department.objects.filter(is_deleted=False)
+
 
 class DepartmentDetailView(DetailView):
     model = Department
     template_name = "phonebook/department_detail.html"
     context_object_name = "department"
+
+    def get_queryset(self):
+        return Department.objects.filter(is_deleted=False)
 
 
 class DepartmentCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -68,6 +75,14 @@ class DepartmentDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteVi
     success_url = reverse_lazy("department_list")
     permission_required = "phonebook.delete_department"
 
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.is_deleted = True
+        self.object.deleted_by = request.user
+        self.object.deleted_at = timezone.now()
+        self.object.save()
+        return redirect(self.success_url)
+
 
 class EmployeeListView(ListView):
     model = Employee
@@ -75,7 +90,7 @@ class EmployeeListView(ListView):
     context_object_name = "employees"
 
     def get_queryset(self):
-        return Employee.objects.select_related("department__parent").order_by(
+        return Employee.objects.filter(is_deleted=False).select_related("department__parent").order_by(
             "department__number", "name_ru", "name_kk"
         )
 
@@ -84,6 +99,9 @@ class EmployeeDetailView(DetailView):
     model = Employee
     template_name = "phonebook/employee_detail.html"
     context_object_name = "employee"
+
+    def get_queryset(self):
+        return Employee.objects.filter(is_deleted=False)
 
 
 class EmployeeAddView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -121,6 +139,14 @@ class EmployeeDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView
     template_name = "phonebook/employee_confirm_delete.html"
     success_url = reverse_lazy("phonebook")
     permission_required = "phonebook.delete_employee"
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.is_deleted = True
+        self.object.deleted_by = request.user
+        self.object.deleted_at = timezone.now()
+        self.object.save()
+        return redirect(self.success_url)
 
 
 class HomePageView(TemplateView):

@@ -61,6 +61,16 @@ class Department(MPTTModel):
         related_name="updated_departments",
         verbose_name=_("Обновлено пользователем"),
     )
+    is_deleted = models.BooleanField(default=False, verbose_name=_("Удалено"))
+    deleted_at = models.DateTimeField(null=True, blank=True, verbose_name=_("Дата удаления"))
+    deleted_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="deleted_departments",
+        verbose_name=_("Удалено пользователем"),
+    )
 
     class MPTTMeta:
         order_insertion_by = ["name_ru"]
@@ -127,6 +137,16 @@ class Employee(models.Model):
         blank=True,
         related_name="updated_employees",
         verbose_name=_("Обновлено пользователем"),
+    )
+    is_deleted = models.BooleanField(default=False, verbose_name=_("Удалено"))
+    deleted_at = models.DateTimeField(null=True, blank=True, verbose_name=_("Дата удаления"))
+    deleted_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="deleted_employees",
+        verbose_name=_("Удалено пользователем"),
     )
 
     class Meta:
