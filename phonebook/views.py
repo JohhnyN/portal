@@ -44,6 +44,11 @@ class DepartmentCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateVi
     success_url = reverse_lazy("department_list")
     permission_required = "phonebook.add_department"
 
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        form.instance.updated_by = self.request.user
+        return super().form_valid(form)
+
 
 class DepartmentUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Department
@@ -51,6 +56,10 @@ class DepartmentUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateVi
     fields = ["name_ru", "name_kk", "type", "parent"]
     success_url = reverse_lazy("department_list")
     permission_required = "phonebook.change_department"
+
+    def form_valid(self, form):
+        form.instance.updated_by = self.request.user
+        return super().form_valid(form)
 
 
 class DepartmentDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
@@ -80,17 +89,25 @@ class EmployeeDetailView(DetailView):
 class EmployeeAddView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Employee
     template_name = "phonebook/employee_form.html"
-    fields = "__all__"
+    fields = ["name_ru", "name_kk", "position_ru", "position_kk", "department", "email", "city_phone_number", "mobile_number", "photo"]
     success_url = reverse_lazy("phonebook")
     permission_required = "phonebook.add_employee"
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
 
 
 class EmployeeUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Employee
     template_name = "phonebook/employee_form.html"
-    fields = "__all__"
+    fields = ["name_ru", "name_kk", "position_ru", "position_kk", "department", "email", "city_phone_number", "mobile_number", "photo"]
     success_url = reverse_lazy("phonebook")
     permission_required = "phonebook.change_employee"
+
+    def form_valid(self, form):
+        form.instance.updated_by = self.request.user
+        return super().form_valid(form)
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()

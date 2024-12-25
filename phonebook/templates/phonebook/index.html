@@ -4,7 +4,8 @@
 {% block title %}Портал{% endblock %}
 
 {% block content %}
-<header class="header-image text-center text-white d-flex align-items-center justify-content-center">    
+<header class="header-image text-center text-white d-flex align-items-center justify-content-center">
+    <div class="overlay"></div>
     <div class="container">
         <h1 class="display-4">{% trans "Портал KMO" %}</h1>
         <p class="lead">{% trans "Единый информационный портал Казмедии" %}</p>
@@ -49,7 +50,6 @@
                 </div>
                 <div class="card-body">
                     <fxwidget-er inverse="false" amount="1" decimals="2" large="false" shadow="false" symbol="true" flag="true" changes="true" grouping="true" border="true" main-curr="USD" sel-curr="EUR,USD,CNY,KZT" background-color="#ffffff"></fxwidget-er>
-                    
                     <script async src="https://s.fx-w.io/widgets/exchange-rates/latest.js"></script>
                 </div>
             </div>

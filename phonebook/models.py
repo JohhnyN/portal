@@ -1,6 +1,10 @@
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+from django.utils import timezone
 
 class Department(MPTTModel):
     ORGANIZATION = "ORGANIZATION"
@@ -37,6 +41,25 @@ class Department(MPTTModel):
         related_name="children",
         help_text=_("Родительское подразделение"),
         verbose_name=_("Родительское подразделение"),
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Дата создания"))
+    updated_at = models.DateTimeField(null=True, blank=True, verbose_name=_("Дата обновления"))
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="created_departments",
+        verbose_name=_("Создано пользователем"),
+    )
+    updated_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="updated_departments",
+        verbose_name=_("Обновлено пользователем"),
     )
 
     class MPTTMeta:
@@ -87,6 +110,24 @@ class Employee(models.Model):
     photo = models.ImageField(
         upload_to="photos/", blank=True, null=True, verbose_name=_("Фото")
     )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Дата создания"))
+    updated_at = models.DateTimeField(null=True, blank=True, verbose_name=_("Дата обновления"))
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="created_employees",
+        verbose_name=_("Создано пользователем"),
+    )
+    updated_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="updated_employees",
+        verbose_name=_("Обновлено пользователем"),
+    )
 
     class Meta:
         verbose_name = _("Сотрудник")
@@ -94,3 +135,13 @@ class Employee(models.Model):
 
     def __str__(self):
         return self.name_ru
+
+@receiver(pre_save, sender=Employee)
+def set_updated_at(sender, instance, **kwargs):
+    if instance.pk:
+        instance.updated_at = timezone.now()
+
+@receiver(pre_save, sender=Department)
+def set_department_updated_at(sender, instance, **kwargs):
+    if instance.pk:
+        instance.updated_at = timezone.now()
