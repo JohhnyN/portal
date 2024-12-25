@@ -1,0 +1,43 @@
+{% load i18n static %}
+<tr data-id="{{ department.id }}" data-parent-id="{{ parent_id }}" class="child" data-level="{{ level }}" style="display:none;">
+    <td style="padding-left: {{ level|add:1 }}em">
+        <a href="{% url 'department_detail' department.id %}">
+            {% if CURRENT_LANGUAGE == 'ru' %}
+                {{ department.name_ru }}
+            {% elif CURRENT_LANGUAGE == 'kk' %}
+                {{ department.name_kk }}
+            {% else %}
+                {{ department.name_ru }}
+            {% endif %}
+        </a>
+    </td>
+    <td>
+        {{ department.get_type_display }}
+    </td>
+    <td>
+        {% if department.parent %}
+            {% if CURRENT_LANGUAGE == 'ru' %}
+                {{ department.parent.name_ru }}
+            {% elif CURRENT_LANGUAGE == 'kk' %}
+                {{ department.parent.name_kk }}
+            {% else %}
+                {{ department.parent.name_ru }}
+            {% endif %}
+        {% else %}
+            -
+        {% endif %}
+    </td>
+    {% if perms.phonebook.change_department or perms.phonebook.delete_department %}
+    <td>
+        {% if perms.phonebook.change_department %}
+            <a href="{% url 'department_update' department.id %}" class="btn btn-warning btn-sm">{% trans "Изменить" %}</a>
+        {% endif %}
+        {% if perms.phonebook.delete_department %}
+            <a href="{% url 'department_delete' department.id %}" class="btn btn-danger btn-sm">{% trans "Удалить" %}</a>
+        {% endif %}
+    </td>
+    {% endif %}
+</tr>
+{% for child in department.get_children %}
+    {% include "phonebook/department_list_item.html" with department=child parent_id=department.id level=level|add:1 %}
+{% endfor %}

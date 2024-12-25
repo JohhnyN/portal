@@ -1,0 +1,90 @@
+{% extends "phonebook/base.html" %}
+{% load i18n static %}
+
+{% block title %}
+    {% if form.instance.pk %}
+        {% trans "Изменить подразделение" %}
+    {% else %}
+        {% trans "Создать подразделение" %}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} mt-3">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="text-center mb-0">
+                        {% if form.instance.pk %}
+                            {% trans "Изменить подразделение" %}
+                        {% else %}
+                            {% trans "Создать подразделение" %}
+                        {% endif %}
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        {{ form.non_field_errors }}
+                        <div class="row mb-3">
+                            <label for="id_name_ru" class="col-sm-2 col-form-label">{{ form.name_ru.label }}</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="name_ru" class="form-control" maxlength="255" placeholder="" required autofocus id="id_name_ru" value="{{ form.name_ru.value|default_if_none:'' }}">
+                                {{ form.name_ru.errors }}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="id_name_kk" class="col-sm-2 col-form-label">{{ form.name_kk.label }}</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="name_kk" class="form-control" maxlength="255" placeholder="" required autofocus id="id_name_kk" value="{{ form.name_kk.value|default_if_none:'' }}">
+                                {{ form.name_kk.errors }}
+                            </div>                            
+                        </div>
+                        <div class="row mb-3">
+                            <label for="id_type" class="col-sm-2 col-form-label">{{ form.type.label }}</label>
+                            <div class="col-sm-10">
+                                <select name="type" class="form-control" id="id_type" aria-describedby="id_type_helptext" required>
+                                    {% for choice in form.type.field.choices %}
+                                        <option value="{{ choice.0 }}" {% if choice.0 == form.type.value %}selected{% endif %}>{{ choice.1 }}</option>
+                                    {% endfor %}
+                                    {{ form.type.errors }}
+                                </select>
+                            </div>                            
+                        </div>
+                        <div class="row mb-3">
+                            <label for="id_parent" class="col-sm-2 col-form-label">{{ form.parent.label }}</label>
+                            <div class="col-sm-10">
+                                <select name="parent" class="form-control" id="id_parent" aria-describedby="id_parent_helptext">
+                                    <option value="">---------</option>
+                                    {% for choice in form.parent.field.queryset %}
+                                        <option value="{{ choice.pk }}" {% if choice.pk == form.parent.value %}selected{% endif %}>
+                                            {% if CURRENT_LANGUAGE == 'ru' %}
+                                                {{ choice.name_ru }}
+                                            {% elif CURRENT_LANGUAGE == 'kk' %}
+                                                {{ choice.name_kk }}
+                                            {% else %}
+                                                {{ choice.name_ru }}
+                                            {% endif %}
+                                        </option>
+                                    {% endfor %}
+                                    {{ form.parent.errors }}
+                                </select>
+                            </div>                           
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-success me-2">{% trans "Сохранить" %}</button>
+                            <a href="{% url 'department_list' %}" class="btn btn-secondary">{% trans "Отмена" %}</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

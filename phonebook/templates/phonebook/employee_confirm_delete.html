@@ -1,0 +1,39 @@
+{% extends "phonebook/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "Удалить сотрудника" %}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h2 class="text-center mb-0">{% trans "Удалить сотрудника" %}</h2>
+                </div>
+                <div class="card-body">
+                    <p>
+                        {% trans "Вы уверены, что хотите удалить сотрудника" %}
+                        <strong>
+                            {% if CURRENT_LANGUAGE == 'ru' %}
+                                {{ object.name_ru }}
+                            {% elif CURRENT_LANGUAGE == 'kk' %}
+                                {{ object.name_kk }}
+                            {% else %}
+                                {{ object.name_ru }}
+                            {% endif %}
+                        </strong>?
+                    </p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-danger me-2">{% trans "Удалить" %}</button>
+                            <a href="{% url 'phonebook' %}" class="btn btn-secondary">{% trans "Отмена" %}</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,60 @@
+.container {
+  max-width: 1500px;
+}
+
+/* table*/
+.column-width-employees {
+    width: 12.5%;
+}
+
+.column-width-departments {
+    width: 25%;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: #CFE2FF;
+}
+
+.img {
+    overflow: hidden;
+}
+
+.img-thumbnail {        
+        cursor: pointer;
+        width: 100%;
+        height: auto;        
+        transition: transform 0.6s ease-in-out;
+    }
+
+.img-thumbnail:hover {
+      transform: scale(1.7);
+    }
+/* table*/
+
+/* employee_form image*/
+.middle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  opacity: 0;
+  transition: .5s ease;
+  transform: translate(-50%, -50%);
+}
+
+.image-group:hover .middle {  
+  opacity: 1;
+}
+
+.text {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+/* employee_form image*/
+
+
+
+
+
+
+
+
+

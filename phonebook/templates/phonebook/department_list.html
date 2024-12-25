@@ -1,0 +1,134 @@
+{% extends "phonebook/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "Список подразделений" %}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">{% trans 'Список подразделений' %}</h2>
+    <div class="text-end mb-3">        
+        {% if perms.phonebook.add_department %}
+            <a href="{% url 'department_add' %}" class="btn btn-success">{% trans "Создать подразделение" %}</a>
+        {% endif %}
+        <button id="expand-all" class="btn btn-primary">{% trans "Раскрыть все" %}</button>
+        <button id="collapse-all" class="btn btn-secondary">{% trans "Скрыть все" %}</button>
+    </div>
+    <div class="input-group mt-3">
+        <input type="text" id="search-input" class="form-control" placeholder="{% trans 'Поиск подразделения...' %}">
+        <button class="btn btn-outline-secondary" type="button" id="search-addon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search-heart" viewBox="0 0 16 16">
+                <path d="M6.5 4.482c1.664-1.673 5.825 1.254 0 5.018-5.825-3.764-1.664-6.69 0-5.018"/>
+                <path d="M13 6.5a6.47 6.47 0 0 1-1.258 3.844q.06.044.115.098l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1-.1-.115h.002A6.5 6.5 0 1 1 13 6.5M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11"/>
+            </svg>            
+        </button>
+    </div>
+    <table class="table table-bordered table-striped table-hover text-center align-middle mt-5">
+        <thead class="table-primary align-middle">
+            <tr>
+                <th scope="col" class="column-width-departments">{% trans "Название" %}</th>
+                <th scope="col" class="column-width-departments">{% trans "Тип" %}</th>
+                <th scope="col" class="column-width-departments">{% trans "Родительское подразделение." %}</th>
+                {% if perms.phonebook.change_department or perms.phonebook.delete_department %}
+                <th scope="col" class="column-width-departments">{% trans "Действия" %}</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody id="department-table">
+            {% for department in departments %}
+                {% if department.parent is None %}
+                    <tr data-id="{{ department.id }}" class="parent" data-level="0">
+                        <td>
+                            <a href="{% url 'department_detail' department.id %}">
+                                {% if CURRENT_LANGUAGE == 'ru' %}
+                                    {{ department.name_ru }}
+                                {% elif CURRENT_LANGUAGE == 'kk' %}
+                                    {{ department.name_kk }}
+                                {% else %}
+                                    {{ department.name_ru }}
+                                {% endif %}
+                            </a>
+                        </td>
+                        <td>{{ department.get_type_display }}</td>
+                        <td>-</td>
+                        {% if perms.phonebook.change_department or perms.phonebook.delete_department %}
+                        <td>
+                            {% if perms.phonebook.change_department %}
+                                <a href="{% url 'department_update' department.id %}" class="btn btn-warning btn-sm">{% trans "Изменить" %}</a>
+                            {% endif %}
+                            {% if perms.phonebook.delete_department %}
+                                <a href="{% url 'department_delete' department.id %}" class="btn btn-danger btn-sm">{% trans "Удалить" %}</a>
+                            {% endif %}
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% for child in department.children.all %}
+                        {% include "phonebook/department_list_item.html" with department=child parent_id=department.id level=1 %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('tr').forEach(function(row) {
+            row.addEventListener('click', function(e) {
+                if (!e.target.closest('a, .btn')) {
+                    const id = row.getAttribute('data-id');
+                    const rows = document.querySelectorAll(`[data-parent-id="${id}"]`);
+                    
+                    if (row.classList.contains('expanded')) {
+                        row.classList.remove('expanded');
+                        hideChildren(rows);
+                    } else {
+                        row.classList.add('expanded');
+                        rows.forEach(function(childRow) {
+                            childRow.style.display = 'table-row';
+                        });
+                    }
+                }
+            });
+        });
+
+        document.getElementById('expand-all').addEventListener('click', function() {
+            document.querySelectorAll('tr').forEach(function(row) {
+                row.classList.add('expanded');
+            });
+            document.querySelectorAll('tr[data-level]').forEach(function(row) {
+                row.style.display = 'table-row';
+            });
+        });
+
+        document.getElementById('collapse-all').addEventListener('click', function() {
+            document.querySelectorAll('tr[data-level]').forEach(function(row) {
+                if (row.getAttribute('data-level') !== '0') {
+                    row.classList.remove('expanded');
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        function hideChildren(rows) {
+            rows.forEach(function(row) {
+                const id = row.getAttribute('data-id');
+                const children = document.querySelectorAll(`[data-parent-id="${id}"]`);
+                row.style.display = 'none';
+                hideChildren(children);
+            });
+        }
+
+        document.getElementById('search-input').addEventListener('input', function() {
+            const searchValue = this.value.toLowerCase();
+            document.querySelectorAll('#department-table tr').forEach(function(row) {
+                const name = row.querySelector('td a').textContent.toLowerCase();
+                if (name.includes(searchValue)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

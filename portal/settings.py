@@ -1,17 +1,15 @@
 import os
 from pathlib import Path
 from decouple import config
-
+from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 SECRET_KEY = config("SECRET_KEY")
 
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -20,6 +18,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "import_export",
     "mptt",
     "phonebook",
 ]
@@ -27,6 +26,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -54,7 +54,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "portal.wsgi.application"
 
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -65,7 +64,6 @@ DATABASES = {
         "PORT": config("DB_PORT", default="5432"),
     }
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -82,25 +80,30 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 LANGUAGE_CODE = "ru"
 
-LOCALE_PATHS = (os.path.join(BASE_DIR, "phonebook", "locale"),)
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
+]
 
 LANGUAGES = [
-    ("ru", "Russian"),
-    ("kk", "Kazakh"),
+    ("ru", _("Russian")),
+    ("kk", _("Kazakh")),
 ]
+
+MODELTRANSLATION_DEFAULT_LANGUAGE = "ru"
+MODELTRANSLATION_PREPOPULATE_LANGUAGE = "ru"
 
 TIME_ZONE = "Asia/Almaty"
 
 USE_I18N = True
 USE_L10N = True
-
 USE_TZ = True
-
 
 STATIC_URL = "static/"
 
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGIN_URL = "/login/"
+LOGIN_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "home"

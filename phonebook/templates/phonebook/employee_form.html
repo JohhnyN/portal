@@ -1,0 +1,203 @@
+{% extends "phonebook/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% if employee %}{% trans "Изменить сотрудника" %}{% else %}{% trans "Добавить сотрудника" %}{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} mt-3">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="text-center mb-0">{% if employee %}{% trans "Изменить сотрудника" %}{% else %}{% trans "Добавить сотрудника" %}{% endif %}</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate id="employee-form">
+                        {% csrf_token %}
+                        <div class="row mb-3">
+                            <label for="id_name_ru" class="col-sm-3 col-form-label">{{ form.name_ru.label }}:</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="name_ru" class="form-control" maxlength="255" placeholder="" required autofocus id="id_name_ru" value="{{ form.name_ru.value|default_if_none:'' }}">                                
+                                <div class="invalid-feedback">
+                                    {% trans "Поле должно быть заполнено." %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="id_name_kk" class="col-sm-3 col-form-label">{{ form.name_kk.label }}:</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="name_kk" class="form-control" maxlength="255" placeholder="" required autofocus id="id_name_kk" value="{{ form.name_kk.value|default_if_none:'' }}">                                
+                                <div class="invalid-feedback">
+                                    {% trans "Поле должно быть заполнено." %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="id_position_ru" class="col-sm-3 col-form-label">{{ form.position_ru.label }}:</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="position_ru" class="form-control" maxlength="255" placeholder="" required autofocus id="id_position_ru" value="{{ form.position_ru.value|default_if_none:'' }}">
+                                <div class="invalid-feedback">
+                                    {% trans "Поле должно быть заполнено." %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="id_position_kk" class="col-sm-3 col-form-label">{{ form.position_kk.label }}:</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="position_kk" class="form-control" maxlength="255" placeholder="" required autofocus id="id_position_kk" value="{{ form.position_kk.value|default_if_none:'' }}">
+                                <div class="invalid-feedback">
+                                    {% trans "Поле должно быть заполнено." %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="id_department" class="col-sm-3 col-form-label">{{ form.department.label }}:</label>
+                            <div class="col-sm-9">                                
+                                <select name="department" class="form-control" id="id_department" required>
+                                    <option value=""></option>
+                                    {% for choice in form.department.field.choices %}
+                                        <option value="{{ choice.0 }}" {% if choice.0 == form.department.value %}selected{% endif %}>{{ choice.1 }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="invalid-feedback">
+                                    {% trans "Вы должны выбрать подразделение." %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="id_email" class="col-sm-3 col-form-label">{{ form.email.label }}:</label>
+                            <div class="col-sm-9">
+                                <input type="email" name="email" class="form-control" maxlength="255" placeholder="" id="id_email" value="{{ form.email.value|default_if_none:'' }}">
+                                <div class="invalid-feedback">
+                                    {% trans "Введите правильный email адрес." %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="id_city_phone_number" class="col-sm-3 col-form-label">{{ form.city_phone_number.label }}:</label>
+                            <div class="col-sm-9">
+                                <select name="city_phone_number" class="form-control" id="id_city_phone_number" required>
+                                    <option value=""></option>
+                                    {% for choice in form.city_phone_number.field.choices %}
+                                        <option value="{{ choice.0 }}" {% if choice.0 == form.city_phone_number.value %}selected{% endif %}>{{ choice.1 }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="invalid-feedback">
+                                    {% trans "Вы должны выбрать номер телефона." %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="id_mobile_number" class="col-sm-3 col-form-label">{{ form.mobile_number.label }}:</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="mobile_number" class="form-control" maxlength="255" placeholder="+7-777-77-77" id="id_mobile_number" value="{{ form.mobile_number.value|default_if_none:'' }}">
+                                <div class="invalid-feedback">
+                                    {% trans "Введите номер телефона в формате +7-777-77-77." %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="form-group position-relative pb-3" id="id_image_group">
+                                <img class="img-fluid" src="{% if form.instance.photo %} {{form.instance.photo.url}} {% endif %}" id="id_image_display">
+                                <div class="middle text-center">
+                                    <div class="text text-white h6 px-3 py-2">{% trans "Изменить фото" %}</div>
+                                </div>
+                            </div>
+                            <label class="col-sm-3 col-form-label">{% trans "Фото" %}</label>                            
+                            <div class="col-sm-9">
+                                <label class="btn btn-outline-primary" for="id_image_file">{% trans "Выберите фото" %}</label>
+                                <input type="file" name="photo" id="id_image_file" accept="image/*" onchange="readURL(this)" value="{{employees.photo}}" style="display:none;">
+                                <button type="button" class="btn btn-outline-danger" id="delete-photo-btn">{% trans "Удалить фото" %}</button>
+                                <input type="hidden" name="delete_photo_flag" id="delete_photo_flag" value="0">   
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-success me-2">{% trans "Сохранить" %}</button>
+                            <a href="{% url 'phonebook' %}" class="btn btn-secondary">{% trans "Отмена" %}</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('employee-form');
+        const mobileNumberInput = document.getElementById('id_mobile_number');
+        const photoInput = document.getElementById('id_image_file');
+        const photoPreview = document.getElementById('id_image_display');
+        
+        // Automatically add +7- prefix if not present
+        mobileNumberInput.addEventListener('focus', function() {
+            if (!mobileNumberInput.value.startsWith('+7-')) {
+                mobileNumberInput.value = '+7-';
+            }
+        });
+        
+        // Validate mobile number format on form submission
+        form.addEventListener('submit', function(event) {
+            const pattern = /^\+7-\d{3}-\d{3}-\d{2}-\d{2}$/;
+            let isValid = form.checkValidity();
+            
+            if (mobileNumberInput.value && !pattern.test(mobileNumberInput.value)) {
+                isValid = false;
+                mobileNumberInput.classList.add('is-invalid');
+            } else {
+                mobileNumberInput.classList.remove('is-invalid');
+            }
+            
+            if (!isValid) {
+                event.preventDefault();
+                event.stopPropagation();
+                form.classList.add('was-validated');
+            }
+        });
+
+        // Function to preview image before upload
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    photoPreview.src = e.target.result;
+                    photoPreview.style.display = 'block';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Trigger file input when clicking on image group
+        document.getElementById('id_image_group').addEventListener('click', function() {
+            photoInput.click();
+        });
+        
+        // Event listener for image input change
+        photoInput.addEventListener('change', function() {
+            readURL(this);
+        });
+        
+        // Hover effect for image group
+        const imageGroup = document.getElementById('id_image_group');
+        imageGroup.addEventListener('mouseover', function() {
+            imageGroup.querySelector('.middle').style.opacity = 1;
+        });
+        imageGroup.addEventListener('mouseout', function() {
+            imageGroup.querySelector('.middle').style.opacity = 0;
+        });
+        
+        // Set delete photo flag on delete button click 
+        document.getElementById('delete-photo-btn').addEventListener('click', function() {
+            delete_photo_flag.value = '1';
+            photoPreview.src = '';
+            photoInput.value = ''; 
+        });
+    });
+</script>
+
+{% endblock %}

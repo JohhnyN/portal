@@ -1,0 +1,159 @@
+{% extends "phonebook/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "Список сотрудников" %}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">{% trans "Телефонная книга" %}</h2>
+    <div class="text-end">
+        {% if perms.phonebook.add_employee %}
+            <a href="{% url 'employee_add' %}" class="btn btn-success">{% trans "Добавить сотрудника" %}</a>
+        {% endif %}
+    </div>
+    <div class="input-group mt-3">
+        <input type="text" id="search-input" class="form-control" placeholder="{% trans "Поиск сотрудника..." %}">
+        <button class="btn btn-outline-secondary" type="button" id="search-addon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search-heart" viewBox="0 0 16 16">
+                <path d="M6.5 4.482c1.664-1.673 5.825 1.254 0 5.018-5.825-3.764-1.664-6.69 0-5.018"/>
+                <path d="M13 6.5a6.47 6.47 0 0 1-1.258 3.844q.06.044.115.098l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1-.1-.115h.002A6.5 6.5 0 1 1 13 6.5M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11"/>
+            </svg>            
+        </button>
+    </div>
+    <table class="table table-bordered table-striped table-hover text-center align-middle mt-5">
+        <thead class="table-primary align-middle">
+            <tr>
+                <th scope="col" class="column-width-employees">{% trans "ФИО" %}</th>
+                <th scope="col" class="column-width-employees">{% trans "Должность" %}</th>
+                <th scope="col" class="column-width-employees">{% trans "Департамент" %}</th>
+                <th scope="col" class="column-width-employees">{% trans "Отдел" %}</th>
+                <th scope="col" class="column-width-employees">{% trans "Email1" %}</th>
+                <th scope="col" class="column-width-employees">{% trans "Городской телефон" %}</th>
+                <th scope="col" class="column-width-employees">{% trans "Мобильный телефон" %}</th>
+                <th scope="col" class="column-width-employees">{% trans "Фото" %}</th>
+                {% if perms.phonebook.change_employee or perms.phonebook.delete_employee %}
+                <th scope="col" class="column-width-employees">{% trans "Действия" %}</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody id="employee-table">
+            {% for employee in employees %}
+                <tr>
+                    <td>
+                        <a href="{% url 'employee_detail' employee.id %}">
+                            {% if CURRENT_LANGUAGE == 'ru' %}
+                                {{ employee.name_ru }}
+                            {% elif CURRENT_LANGUAGE == 'kk' %}
+                                {{ employee.name_kk }}
+                            {% else %}
+                                {{ employee.name_ru }}
+                            {% endif %}
+                        </a>
+                    </td>
+                    <td>
+                        {% if CURRENT_LANGUAGE == 'ru' %}
+                            {{ employee.position_ru }}
+                        {% elif CURRENT_LANGUAGE == 'kk' %}
+                            {{ employee.position_kk }}
+                        {% else %}
+                            {{ employee.position_ru }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if employee.department.type == "DEPARTMENT" %}
+                            {% if CURRENT_LANGUAGE == 'ru' %}
+                                {{ employee.department.name_ru }}
+                            {% elif CURRENT_LANGUAGE == 'kk' %}
+                                {{ employee.department.name_kk }}
+                            {% else %}
+                                {{ employee.department.name_ru }}
+                            {% endif %}
+                        {% elif employee.department.parent and employee.department.parent.type == "DEPARTMENT" %}
+                            {% if CURRENT_LANGUAGE == 'ru' %}
+                                {{ employee.department.parent.name_ru }}
+                            {% elif CURRENT_LANGUAGE == 'kk' %}
+                                {{ employee.department.parent.name_kk }}
+                            {% else %}
+                                {{ employee.department.parent.name_ru }}
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if employee.department.type == "DIVISION" %}
+                            {% if CURRENT_LANGUAGE == 'ru' %}
+                                {{ employee.department.name_ru }}
+                            {% elif CURRENT_LANGUAGE == 'kk' %}
+                                {{ employee.department.name_kk }}
+                            {% else %}
+                                {{ employee.department.name_ru }}
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if employee.email %}
+                            <a href="mailto:{{ employee.email }}" class="text-decoration-none">{{ employee.email }}</a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if employee.mobile_number %}
+                            <a href="tel:{{ employee.mobile_number|cut:"-" }}" class="text-decoration-none">{{ employee.mobile_number }}</a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if employee.city_phone_number %}
+                            <a href="tel:+7{{ employee.city_phone_number|cut:"-" }}" class="text-decoration-none">{{ employee.city_phone_number }}</a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if employee.photo %}
+                            <img src="{{ employee.photo.url }}" alt="Фото" class="img-thumbnail border-0" style="width: 200px; height: 100px;">
+                        {% endif %}
+                    </td>
+                    {% if perms.phonebook.change_employee or perms.phonebook.delete_employee %}
+                    <td>
+                        {% if perms.phonebook.change_employee %}
+                            <a href="{% url 'employee_update' employee.id %}" class="btn btn-warning btn-sm action-btn mb-2">{% trans "Изменить" %}</a>
+                        {% endif %}
+                        {% if perms.phonebook.delete_employee %}
+                            <a href="{% url 'employee_delete' employee.id %}" class="btn btn-danger btn-sm action-btn">{% trans "Удалить" %}</a>
+                        {% endif %}
+                    </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<link rel="stylesheet" href="{% static 'phonebook/css/style.css' %}">
+
+<style>
+    .action-btn {
+        width: 80px; /* или любое другое значение */
+        margin: 0 5px;
+    }
+</style>
+
+<script>
+    function filterTable() {
+        const filter = document.getElementById('search-input').value.toLowerCase();
+        const rows = document.querySelectorAll('#employee-table tr');
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            const match = [...cells].some(cell => cell.textContent.toLowerCase().includes(filter));
+            row.style.display = match ? '' : 'none';
+        });
+    }
+
+    document.getElementById('search-input').addEventListener('keyup', function(event) {
+        if (event.key === 'Enter') {
+            filterTable();
+        }
+    });
+
+    document.getElementById('search-addon').addEventListener('click', function() {
+        filterTable();
+    });
+</script>
+
+{% endblock %}

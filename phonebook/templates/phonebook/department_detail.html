@@ -1,0 +1,96 @@
+{% extends "phonebook/base.html" %}
+{% load i18n static %}
+
+{% block title %}
+    {% if CURRENT_LANGUAGE == 'ru' %}
+        {{ department.name_ru }}
+    {% elif CURRENT_LANGUAGE == 'kk' %}
+        {{ department.name_kk }}
+    {% else %}
+        {{ department.name_ru }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-center bg-primary text-white">
+                    <h2>
+                        {% if CURRENT_LANGUAGE == 'ru' %}
+                            {{ department.name_ru }}
+                        {% elif CURRENT_LANGUAGE == 'kk' %}
+                            {{ department.name_kk }}
+                        {% else %}
+                            {{ department.name_ru }}
+                        {% endif %}
+                    </h2>
+                </div>
+                <div class="card-body">                    
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td><strong>{% trans "Название" %}</strong></td>
+                                    <td>
+                                        {% if CURRENT_LANGUAGE == 'ru' %}
+                                            {{ department.name_ru }}
+                                        {% elif CURRENT_LANGUAGE == 'kk' %}
+                                            {{ department.name_kk }}
+                                        {% else %}
+                                            {{ department.name_ru }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>{% trans "Тип" %}</strong></td>
+                                    <td>{{ department.get_type_display }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>{% trans "Количество сотрудников" %}</strong></td>
+                                    <td>{{ department.employees.count }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>{% trans "Подчиненные подразделения" %}</strong></td>
+                                    <td>
+                                        {% if department.children.count > 0 %}
+                                            <ul class="list-unstyled mb-0">
+                                                {% for child in department.children.all %}
+                                                    <li>
+                                                        <a href="{% url 'department_detail' child.id %}">
+                                                            {% if CURRENT_LANGUAGE == 'ru' %}
+                                                                {{ child.name_ru }}
+                                                            {% elif CURRENT_LANGUAGE == 'kk' %}
+                                                                {{ child.name_kk }}
+                                                            {% else %}
+                                                                {{ child.name_ru }}
+                                                            {% endif %}
+                                                        </a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% else %}
+                                            {% trans "Нет подчиненных подразделений" %}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </tbody>                            
+                        </table>
+                    </div>
+                    <div class="text-end">
+                        {% if perms.phonebook.change_department %}
+                            <a href="{% url 'department_update' department.id %}" class="btn btn-warning">{% trans "Изменить" %}</a>
+                        {% endif %}
+                        {% if perms.phonebook.delete_department %}
+                            <a href="{% url 'department_delete' department.id %}" class="btn btn-danger">{% trans "Удалить" %}</a>
+                        {% endif %}
+                        <a href="javascript:history.back()" class="btn btn-secondary">{% trans "Назад" %}</a>
+                        <a href="{% url 'department_list' %}" class="btn btn-secondary">{% trans "Список подразделений" %}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

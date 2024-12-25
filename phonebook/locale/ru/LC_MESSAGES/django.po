@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-17 16:16+0500\n"
+"POT-Creation-Date: 2024-12-24 08:52+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,74 +19,335 @@ msgstr ""
 "10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%"
 "100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: .\phonebook\models.py:11
+#: .\models.py:11
 msgid "Организация"
-msgstr "Организация"
+msgstr ""
 
-#: .\phonebook\models.py:12
+#: .\models.py:12 .\templates\phonebook\phonebook.html:28
 msgid "Департамент"
-msgstr "Департамент"
+msgstr ""
 
-#: .\phonebook\models.py:13
+#: .\models.py:13 .\templates\phonebook\phonebook.html:29
 msgid "Отдел"
-msgstr "Отдел"
+msgstr ""
 
-#: .\phonebook\models.py:16 .\phonebook\models.py:40 .\phonebook\models.py:63
-msgid "Подразделение"
-msgstr "Подразделение"
+#: .\models.py:16
+msgid "Название на русском"
+msgstr ""
 
-#: .\phonebook\models.py:20 .\phonebook\models.py:21
+#: .\models.py:17
+msgid "Название на казахском"
+msgstr ""
+
+#: .\models.py:22 .\models.py:23
 msgid "Тип подразделения"
-msgstr "Тип подразделения"
+msgstr ""
 
-#: .\phonebook\models.py:24
+#: .\models.py:27 .\models.py:28
 msgid "Порядковый номер для вывода на сайт"
-msgstr "Порядковый номер для вывода на сай"
+msgstr ""
 
-#: .\phonebook\models.py:32 .\phonebook\models.py:33
+#: .\models.py:38 .\models.py:39
 msgid "Родительское подразделение"
-msgstr "Родительское подразделени"
+msgstr ""
 
-#: .\phonebook\models.py:41
+#: .\models.py:46 .\models.py:71 .\templates\phonebook\employee_detail.html:59
+msgid "Подразделение"
+msgstr ""
+
+#: .\models.py:47 .\templates\phonebook\base.html:54
 msgid "Подразделения"
-msgstr "Подразделения"
+msgstr ""
 
-#: .\phonebook\models.py:47 .\phonebook\models.py:50 .\phonebook\models.py:74
-#, fuzzy
-#| msgid "Порядковый номер для вывода на сайт"
+#: .\models.py:53 .\models.py:56 .\models.py:82
+#: .\templates\phonebook\employee_detail.html:97
 msgid "Городской номер телефона"
-msgstr "Порядковый номер для вывода на сай"
+msgstr ""
 
-#: .\phonebook\models.py:51
-#, fuzzy
-#| msgid "Родительское подразделение"
+#: .\models.py:57
 msgid "Городские номера телефонов"
-msgstr "Родительское подразделени"
+msgstr ""
 
-#: .\phonebook\models.py:57
-msgid "ФИО"
-msgstr "ФИО"
+#: .\models.py:63
+msgid "ФИО на русском"
+msgstr ""
 
-#: .\phonebook\models.py:58
-msgid "Должность"
-msgstr "Должность"
+#: .\models.py:64
+msgid "ФИО на казахском"
+msgstr ""
 
-#: .\phonebook\models.py:66
-msgid "Адрес электронной почты"
-msgstr "Адрес электронной почты"
+#: .\models.py:65
+msgid "Должность на русском"
+msgstr ""
 
-#: .\phonebook\models.py:76
+#: .\models.py:66
+msgid "Должность на казахском"
+msgstr ""
+
+#: .\models.py:74 .\templates\phonebook\employee_detail.html:89
+msgid "Email"
+msgstr "Email"
+
+#: .\models.py:85 .\templates\phonebook\employee_detail.html:105
 msgid "Сотовый номер"
-msgstr "Сотовый номер"
+msgstr ""
 
-#: .\phonebook\models.py:79
+#: .\models.py:88 .\templates\phonebook\employee_detail.html:113
+#: .\templates\phonebook\employee_detail.html:115
+#: .\templates\phonebook\employee_form.html:111
+#: .\templates\phonebook\phonebook.html:33
 msgid "Фото"
-msgstr "Фото"
+msgstr ""
 
-#: .\phonebook\models.py:83
+#: .\models.py:92
 msgid "Сотрудник"
-msgstr "Сотрудник"
+msgstr ""
 
-#: .\phonebook\models.py:84
+#: .\models.py:93
 msgid "Сотрудники"
-msgstr "Сотрудники"
+msgstr ""
+
+#: .\templates\phonebook\base.html:48
+msgid "Главная"
+msgstr ""
+
+#: .\templates\phonebook\base.html:51 .\templates\phonebook\phonebook.html:8
+msgid "Телефонная книга"
+msgstr ""
+
+#: .\templates\phonebook\base.html:62
+msgid "Выйти"
+msgstr ""
+
+#: .\templates\phonebook\base.html:65 .\templates\phonebook\login.html:31
+msgid "Войти"
+msgstr ""
+
+#: .\templates\phonebook\department_confirm_delete.html:4
+#: .\templates\phonebook\department_confirm_delete.html:12
+msgid "Удалить подразделение"
+msgstr ""
+
+#: .\templates\phonebook\department_confirm_delete.html:17
+#: .\templates\phonebook\department_confirm_delete.html:35
+msgid "Вы не можете удалить подразделение"
+msgstr ""
+
+#: .\templates\phonebook\department_confirm_delete.html:26
+msgid "так как в нем есть сотрудники."
+msgstr ""
+
+#: .\templates\phonebook\department_confirm_delete.html:28
+msgid "Перед удалением подразделения необходимо удалить сотрудников."
+msgstr ""
+
+#: .\templates\phonebook\department_confirm_delete.html:31
+#: .\templates\phonebook\department_confirm_delete.html:62
+msgid "Вернуться к списку подразделений"
+msgstr ""
+
+#: .\templates\phonebook\department_confirm_delete.html:44
+msgid ""
+"так как у него есть подчиненные подразделения. Перед удалением подразделения "
+"необходимо удалить подчиненные подразделения:"
+msgstr ""
+
+#: .\templates\phonebook\department_confirm_delete.html:66
+msgid "Вы уверены, что хотите удалить подразделение"
+msgstr ""
+
+#: .\templates\phonebook\department_confirm_delete.html:79
+#: .\templates\phonebook\department_detail.html:86
+#: .\templates\phonebook\department_list.html:59
+#: .\templates\phonebook\department_list_item.html:36
+#: .\templates\phonebook\employee_confirm_delete.html:30
+#: .\templates\phonebook\employee_detail.html:127
+#: .\templates\phonebook\phonebook.html:118
+msgid "Удалить"
+msgstr ""
+
+#: .\templates\phonebook\department_confirm_delete.html:80
+#: .\templates\phonebook\department_form.html:82
+#: .\templates\phonebook\employee_confirm_delete.html:31
+#: .\templates\phonebook\employee_form.html:121
+msgid "Отмена"
+msgstr ""
+
+#: .\templates\phonebook\department_detail.html:35
+#: .\templates\phonebook\department_list.html:28
+msgid "Название"
+msgstr ""
+
+#: .\templates\phonebook\department_detail.html:47
+#: .\templates\phonebook\department_list.html:29
+msgid "Тип"
+msgstr ""
+
+#: .\templates\phonebook\department_detail.html:51
+msgid "Количество сотрудников"
+msgstr ""
+
+#: .\templates\phonebook\department_detail.html:55
+msgid "Подчиненные подразделения"
+msgstr ""
+
+#: .\templates\phonebook\department_detail.html:74
+msgid "Нет подчиненных подразделений"
+msgstr ""
+
+#: .\templates\phonebook\department_detail.html:83
+#: .\templates\phonebook\department_list.html:56
+#: .\templates\phonebook\department_list_item.html:33
+#: .\templates\phonebook\employee_detail.html:124
+#: .\templates\phonebook\phonebook.html:115
+msgid "Изменить"
+msgstr ""
+
+#: .\templates\phonebook\department_detail.html:88
+#: .\templates\phonebook\employee_detail.html:129
+msgid "Назад"
+msgstr ""
+
+#: .\templates\phonebook\department_detail.html:89
+#: .\templates\phonebook\department_list.html:4
+#: .\templates\phonebook\department_list.html:8
+msgid "Список подразделений"
+msgstr ""
+
+#: .\templates\phonebook\department_form.html:6
+#: .\templates\phonebook\department_form.html:25
+msgid "Изменить подразделение"
+msgstr ""
+
+#: .\templates\phonebook\department_form.html:8
+#: .\templates\phonebook\department_form.html:27
+#: .\templates\phonebook\department_list.html:11
+msgid "Создать подразделение"
+msgstr ""
+
+#: .\templates\phonebook\department_form.html:81
+#: .\templates\phonebook\employee_form.html:120
+msgid "Сохранить"
+msgstr ""
+
+#: .\templates\phonebook\department_list.html:13
+msgid "Раскрыть все"
+msgstr ""
+
+#: .\templates\phonebook\department_list.html:14
+msgid "Скрыть все"
+msgstr ""
+
+#: .\templates\phonebook\department_list.html:17
+msgid "Поиск подразделения..."
+msgstr ""
+
+#: .\templates\phonebook\department_list.html:30
+msgid "Родительское подразделение."
+msgstr ""
+
+#: .\templates\phonebook\department_list.html:32
+#: .\templates\phonebook\phonebook.html:35
+msgid "Действия"
+msgstr ""
+
+#: .\templates\phonebook\employee_confirm_delete.html:4
+#: .\templates\phonebook\employee_confirm_delete.html:12
+msgid "Удалить сотрудника"
+msgstr ""
+
+#: .\templates\phonebook\employee_confirm_delete.html:16
+msgid "Вы уверены, что хотите удалить сотрудника"
+msgstr ""
+
+#: .\templates\phonebook\employee_detail.html:35
+#: .\templates\phonebook\phonebook.html:26
+msgid "ФИО"
+msgstr ""
+
+#: .\templates\phonebook\employee_detail.html:47
+#: .\templates\phonebook\phonebook.html:27
+msgid "Должность"
+msgstr ""
+
+#: .\templates\phonebook\employee_form.html:4
+#: .\templates\phonebook\employee_form.html:17
+msgid "Изменить сотрудника"
+msgstr ""
+
+#: .\templates\phonebook\employee_form.html:4
+#: .\templates\phonebook\employee_form.html:17
+#: .\templates\phonebook\phonebook.html:11
+msgid "Добавить сотрудника"
+msgstr ""
+
+#: .\templates\phonebook\employee_form.html:27
+#: .\templates\phonebook\employee_form.html:36
+#: .\templates\phonebook\employee_form.html:45
+#: .\templates\phonebook\employee_form.html:54
+msgid "Поле должно быть заполнено."
+msgstr ""
+
+#: .\templates\phonebook\employee_form.html:68
+msgid "Вы должны выбрать подразделение."
+msgstr ""
+
+#: .\templates\phonebook\employee_form.html:77
+msgid "Введите правильный email адрес."
+msgstr ""
+
+#: .\templates\phonebook\employee_form.html:91
+msgid "Вы должны выбрать номер телефона."
+msgstr ""
+
+#: .\templates\phonebook\employee_form.html:100
+msgid "Введите номер телефона в формате +7-777-77-77."
+msgstr ""
+
+#: .\templates\phonebook\employee_form.html:108
+msgid "Изменить фото"
+msgstr ""
+
+#: .\templates\phonebook\employee_form.html:113
+msgid "Выберите фото"
+msgstr ""
+
+#: .\templates\phonebook\employee_form.html:115
+msgid "Удалить фото"
+msgstr ""
+
+#: .\templates\phonebook\login.html:4 .\templates\phonebook\login.html:12
+msgid "Вход"
+msgstr ""
+
+#: .\templates\phonebook\login.html:17
+msgid "Неверное имя пользователя или пароль. Пожалуйста, попробуйте еще раз."
+msgstr ""
+
+#: .\templates\phonebook\login.html:23
+msgid "Имя пользователя"
+msgstr ""
+
+#: .\templates\phonebook\login.html:27
+msgid "Пароль"
+msgstr ""
+
+#: .\templates\phonebook\phonebook.html:4
+msgid "Список сотрудников"
+msgstr ""
+
+#: .\templates\phonebook\phonebook.html:15
+msgid "Поиск сотрудника..."
+msgstr ""
+
+#: .\templates\phonebook\phonebook.html:30
+msgid "Email1"
+msgstr "Email"
+
+#: .\templates\phonebook\phonebook.html:31
+msgid "Городской телефон"
+msgstr ""
+
+#: .\templates\phonebook\phonebook.html:32
+msgid "Мобильный телефон"
+msgstr ""

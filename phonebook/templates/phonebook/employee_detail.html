@@ -1,0 +1,136 @@
+{% extends "phonebook/base.html" %}
+{% load i18n static %}
+
+{% block title %}
+    {% if CURRENT_LANGUAGE == 'ru' %}
+        {{ employee.name_ru }}
+    {% elif CURRENT_LANGUAGE == 'kk' %}
+        {{ employee.name_kk }}
+    {% else %}
+        {{ employee.name_ru }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-center bg-primary text-white">
+                    <h2>
+                        {% if CURRENT_LANGUAGE == 'ru' %}
+                            {{ employee.name_ru }}
+                        {% elif CURRENT_LANGUAGE == 'kk' %}
+                            {{ employee.name_kk }}
+                        {% else %}
+                            {{ employee.name_ru }}
+                        {% endif %}
+                    </h2>
+                </div>
+                <div class="card-body">                    
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td><strong>{% trans "ФИО" %}</strong></td>
+                                    <td>
+                                        {% if CURRENT_LANGUAGE == 'ru' %}
+                                            {{ employee.name_ru }}
+                                        {% elif CURRENT_LANGUAGE == 'kk' %}
+                                            {{ employee.name_kk }}
+                                        {% else %}
+                                            {{ employee.name_ru }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>{% trans "Должность" %}</strong></td>
+                                    <td>
+                                        {% if CURRENT_LANGUAGE == 'ru' %}
+                                            {{ employee.position_ru }}
+                                        {% elif CURRENT_LANGUAGE == 'kk' %}
+                                            {{ employee.position_kk }}
+                                        {% else %}
+                                            {{ employee.position_ru }}
+                                        {% endif %}
+                                    </td>
+                                </tr>                                
+                                <tr>
+                                    <td><strong>{% trans "Подразделение" %}</strong></td>
+                                    <td>
+                                        {% for ancestor in employee.department.get_ancestors %}
+                                            <div>
+                                                <a href="{% url 'department_detail' ancestor.pk %}">
+                                                    {% if CURRENT_LANGUAGE == 'ru' %}
+                                                        {{ ancestor.name_ru }}
+                                                    {% elif CURRENT_LANGUAGE == 'kk' %}
+                                                        {{ ancestor.name_kk }}
+                                                    {% else %}
+                                                        {{ ancestor.name_ru }}
+                                                    {% endif %}
+                                                </a>
+                                            </div>
+                                        {% endfor %}
+                                        <div>
+                                            <a href="{% url 'department_detail' employee.department.pk %}">
+                                                {% if CURRENT_LANGUAGE == 'ru' %}
+                                                    {{ employee.department.name_ru }}
+                                                {% elif CURRENT_LANGUAGE == 'kk' %}
+                                                    {{ employee.department.name_kk }}
+                                                {% else %}
+                                                    {{ employee.department.name_ru }}
+                                                {% endif %}
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>                                
+                                {% if employee.email %}
+                                <tr>
+                                    <td><strong>{% trans "Email" %}</strong></td>
+                                    <td>
+                                        <a href="mailto:{{ employee.email }}" class="text-decoration-none">{{ employee.email }}</a>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                                {% if employee.city_phone_number %}
+                                <tr>
+                                    <td><strong>{% trans "Городской номер телефона" %}</strong></td>
+                                    <td>
+                                        <a href="tel:+7{{ employee.city_phone_number|cut:"-" }}" class="text-decoration-none">{{ employee.city_phone_number }}</a>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                                {% if employee.mobile_number %}
+                                <tr>
+                                    <td><strong>{% trans "Сотовый номер" %}</strong></td>
+                                    <td>
+                                        <a href="tel:{{ employee.mobile_number|cut:"-" }}" class="text-decoration-none">{{ employee.mobile_number }}</a>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                                {% if employee.photo %}
+                                <tr>
+                                    <td><strong>{% trans "Фото" %}</strong></td>
+                                    <td>
+                                        <img src="{{ employee.photo.url }}" alt="{% trans "Фото" %}" class="img-thumbnail border-0" style="width: 200px; height: 100px;">
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            </tbody>                            
+                        </table>
+                    </div>
+                    <div class="text-end mt-3">
+                        {% if perms.phonebook.change_employee %}
+                        <a href="{% url 'employee_update' employee.id %}" class="btn btn-warning">{% trans "Изменить" %}</a>
+                        {% endif %}
+                        {% if perms.phonebook.delete_employee %}
+                        <a href="{% url 'employee_delete' employee.id %}" class="btn btn-danger">{% trans "Удалить" %}</a>
+                        {% endif %}
+                        <a href="javascript:history.back()" class="btn btn-secondary">{% trans "Назад" %}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

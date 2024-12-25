@@ -1,0 +1,89 @@
+{% extends "phonebook/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "Удалить подразделение" %}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="text-center mb-0">{% trans "Удалить подразделение" %}</h2>
+                </div>
+                <div class="card-body">
+                    {% if department.employees.count > 0 %}
+                        <div class="alert alert-danger" role="alert">
+                            {% trans "Вы не можете удалить подразделение" %} <span class="fw-bold fs-5">
+                            {% if CURRENT_LANGUAGE == 'ru' %}
+                                "{{ department.name_ru }}"
+                            {% elif CURRENT_LANGUAGE == 'kk' %}
+                                "{{ department.name_kk }}"
+                            {% else %}
+                                "{{ department.name_ru }}"
+                            {% endif %}
+                            </span>, 
+                            {% trans "так как в нем есть сотрудники." %}
+                            <br>
+                            {% trans "Перед удалением подразделения необходимо удалить сотрудников." %}
+                        </div>
+                        <div class="text-end">
+                            <a href="{% url 'department_list' %}" class="btn btn-secondary">{% trans "Вернуться к списку подразделений" %}</a>
+                        </div>
+                    {% elif department.children.count > 0 %}
+                        <div class="alert alert-danger" role="alert">
+                            {% trans "Вы не можете удалить подразделение" %} <span class="fw-bold fs-5">
+                            {% if CURRENT_LANGUAGE == 'ru' %}
+                                "{{ department.name_ru }}"
+                            {% elif CURRENT_LANGUAGE == 'kk' %}
+                                "{{ department.name_kk }}"
+                            {% else %}
+                                "{{ department.name_ru }}"
+                            {% endif %}
+                            </span>, 
+                            {% trans "так как у него есть подчиненные подразделения. Перед удалением подразделения необходимо удалить подчиненные подразделения:" %}
+                            <ul>
+                                {% for child in department.children.all %}
+                                    <li>
+                                        <a href="{% url 'department_detail' child.id %}">
+                                            {% if CURRENT_LANGUAGE == 'ru' %}
+                                                {{ child.name_ru }}
+                                            {% elif CURRENT_LANGUAGE == 'kk' %}
+                                                {{ child.name_kk }}
+                                            {% else %}
+                                                {{ child.name_ru }}
+                                            {% endif %}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="text-end">
+                            <a href="{% url 'department_list' %}" class="btn btn-secondary">{% trans "Вернуться к списку подразделений" %}</a>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-danger" role="alert">
+                            {% trans "Вы уверены, что хотите удалить подразделение" %} <span class="fw-bold fs-5">
+                            {% if CURRENT_LANGUAGE == 'ru' %}
+                                "{{ department.name_ru }}"
+                            {% elif CURRENT_LANGUAGE == 'kk' %}
+                                "{{ department.name_kk }}"
+                            {% else %}
+                                "{{ department.name_ru }}"
+                            {% endif %}
+                            </span>?
+                        </div>                        
+                        <form method="post" class="needs-validation" novalidate>
+                            {% csrf_token %}
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-danger me-2">{% trans "Удалить" %}</button>
+                                <a href="{% url 'department_list' %}" class="btn btn-secondary">{% trans "Отмена" %}</a>
+                            </div>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

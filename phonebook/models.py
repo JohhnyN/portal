@@ -47,7 +47,7 @@ class Department(MPTTModel):
         verbose_name_plural = _("Подразделения")
 
     def __str__(self):
-        return f"{self.type}: {self.name_ru}"
+        return f"{self.get_type_display()}: {self.name_ru}"
 
 class CityPhoneNumber(models.Model):
     number = models.CharField(max_length=20, verbose_name=_("Городской номер телефона"))    
@@ -60,7 +60,8 @@ class CityPhoneNumber(models.Model):
         return self.number
 
 class Employee(models.Model):
-    name = models.CharField(max_length=300, verbose_name=_("ФИО"))
+    name_ru = models.CharField(max_length=300, verbose_name=_("ФИО на русском"))
+    name_kk = models.CharField(max_length=300, verbose_name=_("ФИО на казахском"))
     position_ru = models.CharField(max_length=100, verbose_name=_("Должность на русском"))
     position_kk = models.CharField(max_length=100, verbose_name=_("Должность на казахском"))
     department = models.ForeignKey(
@@ -70,7 +71,7 @@ class Employee(models.Model):
         verbose_name=_("Подразделение"),
     )
     email = models.EmailField(
-        verbose_name=_("Адрес электронной почты"), blank=True, null=True
+        verbose_name=_("Email"), blank=True, null=True
     )
     city_phone_number = models.ForeignKey(
         CityPhoneNumber,
@@ -92,4 +93,4 @@ class Employee(models.Model):
         verbose_name_plural = _("Сотрудники")
 
     def __str__(self):
-        return self.name
+        return self.name_ru
